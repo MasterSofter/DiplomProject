@@ -25,7 +25,7 @@ namespace DynamicSystems
         }
 
 
-        public void OnMoveEventHandler(Vector2 direction, string[] parameterNames, GameObject rootPlayer, GameObject camera) {
+        public void OnMoveEventHandler(Vector2 direction, string[] parameterNames) {
 
             _currentAnimationBlendVector = Vector2.SmoothDamp(_currentAnimationBlendVector, direction, ref _animationVelocity, _smoothAnimationTime);
 
@@ -39,8 +39,6 @@ namespace DynamicSystems
         public void OnVaultOverObstacle() =>
             _animator.SetTrigger("VaultOverObstacle");
 
-
-
         public void OnStartRunEventHandler() {
             _animator.SetBool("Run", true);
         }
@@ -49,12 +47,25 @@ namespace DynamicSystems
             _animator.SetBool("Run", false);
         }
 
-        private void SubscribeEvents() {
-            _eventsSystem.MoveEvent += OnMoveEventHandler;
-            _eventsSystem.StartRunEvent += OnStartRunEventHandler;
-            _eventsSystem.StopRunEvent += OnStopRunEventHandler;
-            _eventsSystem.JumpOverObstacleEvent += OnJumpOverObstacle;
-            _eventsSystem.VaultOverObstacleEvent += OnVaultOverObstacle;
+        public void OnStartClimbingUpWall() {
+            _animator.SetTrigger("ClimbingUpWall");
+        }
+
+        public void OnFinishClimbingUpWall()
+        {
+            _animator.SetTrigger("FinishClimbingUpWall");
+        }
+
+        
+
+        private void SubscribeEvents() {            
+            _eventsSystem.Animation_JumpOverObstacleEvent += OnJumpOverObstacle;
+            _eventsSystem.Animation_VaultOverObstacleEvent += OnVaultOverObstacle;
+            _eventsSystem.Animation_StartRunEvent += OnStartRunEventHandler;
+            _eventsSystem.Animation_FinishRunEvent += OnStopRunEventHandler;
+            _eventsSystem.Animation_MoveEvent += OnMoveEventHandler;
+            _eventsSystem.Animation_StartClimbingUpWallEvent += OnStartClimbingUpWall;
+            _eventsSystem.Animation_FinishClimbimgUpWallEvent += OnFinishClimbingUpWall;
         }
     }
 

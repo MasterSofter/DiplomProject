@@ -28,7 +28,7 @@ namespace DynamicSystems
         /// <summary>
         /// Событие конца бега, которе является триггером
         /// </summary>
-        public Action StopRunEvent;
+        public Action FinishRunEvent;
 
         /// <summary>
         /// Событие обнаружения препятствия
@@ -56,16 +56,40 @@ namespace DynamicSystems
         /// </summary>
         public Action ButtonJumpReleaseEvent;
 
+        /// <summary>
+        /// Событие обнаружения области для лазания
+        /// [1-ый параметр GameObject - ссылка на препятствие поле для лазания
+        /// 2-ой параметр GameObject - ссылка на игрока]
+        /// </summary>
+        public Action<GameObject, GameObject> ClimbAreaDetectedEvent;
 
         /// <summary>
-        /// Событие прыжка через препятствие
+        /// Событие потери из видимости области для лазания
+        /// [1-ый параметр GameObject - ссылка на препятствие поле для лазания
+        /// 2-ой параметр GameObject - ссылка на игрока]
         /// </summary>
-        public Action JumpOverObstacleEvent;
+        public Action<GameObject, GameObject> ClimbAreaMissedEvent;
 
-        /// <summary>
-        /// Событие прыжка с опорой через препятствие
-        /// </summary>
-        public Action VaultOverObstacleEvent;
+
+        public Action StartClimbingUpWallEvent;
+        public Action FinishClimbingUpWallEvent;
+
+        public Action TopClimbWallDetectedEvent;
+
+
+
+        /**************************************************************
+         *                  События для проигрывания анимаций
+         * ***********************************************************/
+
+        public Action<Vector2, string[]> Animation_MoveEvent;
+        public Action Animation_StartClimbingUpWallEvent;
+        public Action Animation_FinishClimbimgUpWallEvent;
+        public Action Animation_StartRunEvent;
+        public Action Animation_FinishRunEvent;
+        public Action Animation_JumpOverObstacleEvent;
+        public Action Animation_VaultOverObstacleEvent;
+
     }
 
 }

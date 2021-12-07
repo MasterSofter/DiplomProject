@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DynamicSystems.Interfaces;
 using DynamicSystems.PlayerControlls;
+using DynamicSystems.Interfaces;
 namespace DynamicSystems {
     /// <summary>
     /// Система, решающая задачу преключение контроллеров, управляющих
@@ -10,18 +10,18 @@ namespace DynamicSystems {
     /// </summary>
     public class DynamicPlayerControllSystem 
     {
-        private IPlayerControll _playerMoveControll, _playerParkourControll;
+        private IPlayerControll _playerMoveControll, _playerClimbControll;
 
         private EventsSystem _eventsSystem;
-        private GameObject _obstacleObject;
-        private bool _playerLookToObstacle = false;
 
-        private bool _jumpPressed = false;
+        private GameObject _climbWallObject;
+        private bool _climbing = false;
 
 
         public DynamicPlayerControllSystem(EventsSystem eventsSystem) {
             _eventsSystem = eventsSystem;
-            _playerMoveControll = new PlayerMoveControll();
+            _playerMoveControll = new PlayerMoveControll(eventsSystem);
+            _playerClimbControll = new PlayerClimbControll(eventsSystem);
 
             SubscribeEvents();
         }
@@ -30,45 +30,53 @@ namespace DynamicSystems {
         public void OnMoveEventHandler(Vector2 direction, string[] parameterNames, GameObject playerRoot, GameObject camera)
         {
             Quaternion viewRotation;
+            Vector3 moveDirection;
 
-            viewRotation = _playerMoveControll.Evaluate(direction, playerRoot.transform, camera);
+            if (!_climbing){
+                viewRotation = _playerMoveControll.Evaluate(direction, playerRoot.transform, camera);
+                _eventsSystem.Animation_MoveEvent(direction, parameterNames);
+            }
+            else {
+                if (_climbWallObject != null)
+                {
+                    viewRotation = _playerClimbControll.Evaluate(direction, playerRoot.transform, _climbWallObject);
+                    _eventsSystem.Animation_MoveEvent(new Vector2(direction.x, direction.y), parameterNames);
+                }
+                else
+                    viewRotation = playerRoot.transform.rotation;
+               
+            }
             playerRoot.transform.rotation = viewRotation;
         }
 
-        public void OnJumpButtonPressedEventHandler(GameObject playerRoot) {
-            if(!_jumpPressed)
-                _jumpPressed = true;
-        }
-
-        public void OnJumpButtonReleaseEventHandler() {
-            _jumpPressed = false;
-        }
-
-        public void OnObstacleDetectedEventHandler(GameObject obstacleObject, GameObject playerRoot ) {
-            _obstacleObject = obstacleObject;
-
-            if (_jumpPressed && _obstacleObject != null)
-            {
-                if (_obstacleObject.tag == "JumpOverObstacle")
-                    _eventsSystem.JumpOverObstacleEvent?.Invoke();
-                if (_obstacleObject.tag == "VaultOverObstacle")
-                    _eventsSystem.VaultOverObstacleEvent?.Invoke();
-            }
-        }
-
-        public void OnObstacleMissedEventHandler(GameObject obstacleObject, GameObject playerRoot)
+        public void OnJumpButtonPressedEventHandler(GameObject playerRoot)
         {
-            if (_obstacleObject == obstacleObject)
-                _obstacleObject = null;
+            if (_climbWallObject != null)
+            {
+                ClimbWall climbWall = _climbWallObject.GetComponent<ClimbWall>();
+                if ((climbWall.TopWall.position - playerRoot.transform.position).y > 0)
+                    _climbing = true;
+            }    
         }
+
+        public void OnClimbAreaMissedEventHandler(GameObject climbWallObject, GameObject playerRoot) => _climbWallObject = null;
+        public void OnClimbAreaDetectedEventHandler(GameObject climbWallObject, GameObject playerRoot) => _climbWallObject = climbWallObject;
+
+        public void OnTopClimbWallDetectedEventHadler() => _climbing = false;
+
+        public void OnStartRunEventHandler() => _eventsSystem.Animation_StartRunEvent?.Invoke();
+        public void OnFinishRunEventHadler() => _eventsSystem.Animation_FinishRunEvent?.Invoke();
+
 
         private void SubscribeEvents()
         {
             _eventsSystem.MoveEvent += OnMoveEventHandler;
             _eventsSystem.ButtonJumpPressedEvent += OnJumpButtonPressedEventHandler;
-            _eventsSystem.ButtonJumpReleaseEvent += OnJumpButtonReleaseEventHandler;
-            _eventsSystem.ObstacleDetectedEvent += OnObstacleDetectedEventHandler;
-            _eventsSystem.ObstacleMissedEvent += OnObstacleMissedEventHandler;
+            _eventsSystem.ClimbAreaDetectedEvent += OnClimbAreaDetectedEventHandler;
+            _eventsSystem.ClimbAreaMissedEvent += OnClimbAreaMissedEventHandler;
+            _eventsSystem.StartRunEvent += OnStartRunEventHandler;
+            _eventsSystem.FinishRunEvent += OnFinishRunEventHadler;
+            _eventsSystem.TopClimbWallDetectedEvent += OnTopClimbWallDetectedEventHadler;
         }
     }
 }
