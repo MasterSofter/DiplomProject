@@ -73,6 +73,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""LightsaberOnOff"",
+                    ""type"": ""Button"",
+                    ""id"": ""21bc8a1e-97e4-46e1-8e3a-de1e40f25e8b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -196,6 +204,17 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""action"": ""StopRun"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b6e29ad3-3c42-457a-93f0-77aa2ecf307e"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LightsaberOnOff"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -211,6 +230,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_ButtonPressedJump = m_Player.FindAction("ButtonPressedJump", throwIfNotFound: true);
         m_Player_ButtonReleaseJump = m_Player.FindAction("ButtonReleaseJump", throwIfNotFound: true);
         m_Player_StopRun = m_Player.FindAction("StopRun", throwIfNotFound: true);
+        m_Player_LightsaberOnOff = m_Player.FindAction("LightsaberOnOff", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -267,6 +287,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_ButtonPressedJump;
     private readonly InputAction m_Player_ButtonReleaseJump;
     private readonly InputAction m_Player_StopRun;
+    private readonly InputAction m_Player_LightsaberOnOff;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -278,6 +299,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @ButtonPressedJump => m_Wrapper.m_Player_ButtonPressedJump;
         public InputAction @ButtonReleaseJump => m_Wrapper.m_Player_ButtonReleaseJump;
         public InputAction @StopRun => m_Wrapper.m_Player_StopRun;
+        public InputAction @LightsaberOnOff => m_Wrapper.m_Player_LightsaberOnOff;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -308,6 +330,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @StopRun.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStopRun;
                 @StopRun.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStopRun;
                 @StopRun.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStopRun;
+                @LightsaberOnOff.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLightsaberOnOff;
+                @LightsaberOnOff.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLightsaberOnOff;
+                @LightsaberOnOff.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLightsaberOnOff;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -333,6 +358,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @StopRun.started += instance.OnStopRun;
                 @StopRun.performed += instance.OnStopRun;
                 @StopRun.canceled += instance.OnStopRun;
+                @LightsaberOnOff.started += instance.OnLightsaberOnOff;
+                @LightsaberOnOff.performed += instance.OnLightsaberOnOff;
+                @LightsaberOnOff.canceled += instance.OnLightsaberOnOff;
             }
         }
     }
@@ -346,5 +374,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnButtonPressedJump(InputAction.CallbackContext context);
         void OnButtonReleaseJump(InputAction.CallbackContext context);
         void OnStopRun(InputAction.CallbackContext context);
+        void OnLightsaberOnOff(InputAction.CallbackContext context);
     }
 }
