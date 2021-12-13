@@ -35,9 +35,6 @@ namespace AISystem.Controller {
                 case AIAction.Sleep:
                     _eventsSystem.SleepEvent?.Invoke();
                     break;
-                case AIAction.ReloatGun:
-                    _eventsSystem.ReloadGunEvent?.Invoke();
-                    break;
             }
         }
 
@@ -56,12 +53,6 @@ namespace AISystem.Controller {
                     break;
                 case AIAction.Rotate:
                     _eventsSystem.RotateEvent?.Invoke(aimGameObject);
-                    break;
-                case AIAction.Shoot:
-                    _eventsSystem.ShootEvent?.Invoke();
-                    break;
-                case AIAction.ReloatGun:
-                    _eventsSystem.ReloadGunEvent?.Invoke();
                     break;
             }
         }

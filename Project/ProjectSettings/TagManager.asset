@@ -24,8 +24,8 @@ TagManager:
   - ClimbArea
   - ClimbWall
   - Player
-  - 
-  - 
+  - Background
+  - IconMenu
   - 
   - 
   - 
@@ -49,4 +49,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: IconMenu
+    uniqueID: 2328133443
+    locked: 0
+  - name: MenuBackground
+    uniqueID: 2086641923
     locked: 0

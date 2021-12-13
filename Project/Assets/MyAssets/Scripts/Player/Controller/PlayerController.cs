@@ -3,18 +3,21 @@ using UnityEngine;
 
 using Player.EventsSystem;
 using Lightsaber.Controller;
+using Player.Model;
 namespace Player.Controller {
     public class PlayerController
     {
         private Vector2 _inputDirection;
-
-        private LightsaberController _lightsaberController;
         private GameObject _obstacleObject = null;
+        private LightsaberController _lightsaberController;
+
+        private PlayerModel _playerModel;
         private PlayerEventsSystem _eventsSystem;
         private InputMaster _inputMaster;
 
-        public PlayerController(InputMaster inputMaster, PlayerEventsSystem eventsSystem, LightsaberController lightsaberController){
+        public PlayerController(InputMaster inputMaster, PlayerEventsSystem eventsSystem, PlayerModel playerModel ,LightsaberController lightsaberController){
             _lightsaberController = lightsaberController;
+            _playerModel = playerModel;
             _eventsSystem = eventsSystem;
             _inputMaster = inputMaster;
             _inputMaster.Enable();
@@ -36,10 +39,23 @@ namespace Player.Controller {
             _inputMaster.Player.ButtonPressedJump.performed += ctx => PressedButtonJump();
             _inputMaster.Player.ButtonReleaseJump.performed += ctx => ReleaseButtonJump();
             _inputMaster.Player.LightsaberOnOff.performed += ctx => LightsaberOnOff();
+
+            _inputMaster.Player.ButtonPressedReadyBlockAttack.performed += ctx => PressedButtonReadyBlockAttack();
+            _inputMaster.Player.ButtonReleaseReadyBlockAttack.performed += ctx => ReleaseButtonReadyBlockAttack();
         }
 
-        private void LightsaberOnOff() => _lightsaberController.LightsaberTurnOnOff();
-     
+
+        private void PressedButtonReadyBlockAttack() {
+            _eventsSystem.ViewStartReadyBlockAttackEvent?.Invoke();
+        }
+
+        private void ReleaseButtonReadyBlockAttack() {
+            _eventsSystem.ViewStopReadyBlockAttackEvent?.Invoke();
+        }
+
+        private void LightsaberOnOff() =>
+           _lightsaberController.LightsaberTurnOnOff();
+
 
         private void OnObstacleDetectedEventHandler(GameObject obstacleObject) => _obstacleObject = obstacleObject;
         private void OnObstacleMissedEventHandler(GameObject obstacleObject) {
@@ -48,13 +64,13 @@ namespace Player.Controller {
         }
 
         public void Update() {
-            _eventsSystem.MoveEvent?.Invoke(_inputDirection);
+            _eventsSystem.ViewMoveEvent?.Invoke(_inputDirection);
         }
 
         private void Move(Vector2 inputDirection) => _inputDirection = inputDirection;
    
-        private void StartRun() => _eventsSystem.StartRunEvent?.Invoke();
-        private void StopRun() => _eventsSystem.StopRunEvent?.Invoke();
+        private void StartRun() => _eventsSystem.ViewStartRunEvent?.Invoke();
+        private void StopRun() => _eventsSystem.ViewStopRunEvent?.Invoke();
 
         private void PressedButtonJump()
         {
@@ -62,12 +78,13 @@ namespace Player.Controller {
             {
                 if (_obstacleObject.tag == "JumpOverObstacle")
                 {
-                    _eventsSystem.JumpOverObstacleEvent?.Invoke();
+                    _lightsaberController.LightsaberTurnOff();
+                    _eventsSystem.ViewJumpOverObstacleEvent?.Invoke();
                     _obstacleObject = null;
                 }
                 else if (_obstacleObject.tag == "VaultOverObstacle")
                 {
-                    _eventsSystem.VaultOverObstacleEvent?.Invoke();
+                    _eventsSystem.ViewVaultOverObstacleEvent?.Invoke();
                     _obstacleObject = null;
                 }
 

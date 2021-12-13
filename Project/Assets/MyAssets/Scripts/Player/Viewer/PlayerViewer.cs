@@ -28,12 +28,22 @@ namespace Player.Viewer {
 
         private void SubscribeEvents()
         {
-            _eventsSystem.MoveEvent += OnMoveEventHandler;
-            _eventsSystem.StartRunEvent += OnStartRunEventHandler;
-            _eventsSystem.StopRunEvent += OnStopRunEventHandler;
-            _eventsSystem.JumpOverObstacleEvent += OnJumpOverObstacleEventHandler;
-            _eventsSystem.VaultOverObstacleEvent += OnVaultOverObstacleEventHandler;
+            _eventsSystem.ViewMoveEvent += OnMoveEventHandler;
+            _eventsSystem.ViewStartRunEvent += OnStartRunEventHandler;
+            _eventsSystem.ViewStopRunEvent += OnStopRunEventHandler;
+            _eventsSystem.ViewJumpOverObstacleEvent += OnJumpOverObstacleEventHandler;
+            _eventsSystem.ViewVaultOverObstacleEvent += OnVaultOverObstacleEventHandler;
 
+            _eventsSystem.ViewStartReadyBlockAttackEvent += OnStartReadyBlockAttackEventHandler;
+            _eventsSystem.ViewStopReadyBlockAttackEvent += OnStopReadyBlockAttackEventHandler;
+        }
+
+        private void OnStartReadyBlockAttackEventHandler() {
+            _animator.SetBool("ReadyBlockAttack", true);
+        }
+
+        private void OnStopReadyBlockAttackEventHandler() {
+            _animator.SetBool("ReadyBlockAttack", false);
         }
 
         private void OnMoveEventHandler(Vector2 inputDirection)

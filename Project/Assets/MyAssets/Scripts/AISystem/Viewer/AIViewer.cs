@@ -26,16 +26,12 @@ namespace AISystem.Viewer {
             _eventsSystem.SleepEvent += OnSleepEventHandler;
             _eventsSystem.MoveEvent += OnMoveEventHandler;
             _eventsSystem.RotateEvent += OnRotateEventHandler;
-            _eventsSystem.ShootEvent += OnShootGunEventHandler;
-            _eventsSystem.ReloadGunEvent += OnReloadGunEventHandler;
             _eventsSystem.AimEvent += OnAimEventHandler;
         }
         protected virtual void OnAimEventHandler(GameObject aimGameObject) {}
         protected virtual void OnSleepEventHandler() {}
         protected virtual void OnMoveEventHandler(GameObject aimGameObject) {}
         protected virtual void OnRotateEventHandler(GameObject aimGameObject) {}
-        protected virtual void OnShootGunEventHandler() {}
-        protected virtual void OnReloadGunEventHandler() {}
     }
 }
 

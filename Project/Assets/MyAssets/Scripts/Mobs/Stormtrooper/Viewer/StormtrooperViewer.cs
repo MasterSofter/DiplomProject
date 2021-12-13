@@ -7,7 +7,7 @@ using AISystem.Viewer;
 namespace Mobs.Stormtrooper.Viewer {
     public sealed class StormtrooperViewer : AIViewer
     {
-        private float _turnSmoothTime = 0.05f;
+        private float _turnSmoothTime = 0.01f;
         private float _turnSmoothVelocity;
         private float _targetAngle, _angle;
 
@@ -34,15 +34,6 @@ namespace Mobs.Stormtrooper.Viewer {
         {
             _gameObjectRoot.transform.rotation = CalculateViewDirection(aimGameObject);
         }
-        protected override void OnShootGunEventHandler()
-        {
-
-        }
-        protected override void OnReloadGunEventHandler()
-        {
-
-        }
-
 
         private Quaternion CalculateViewDirection(GameObject aimGameObject)
         {

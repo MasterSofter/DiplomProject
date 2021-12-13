@@ -68,6 +68,22 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ButtonPressedReadyBlockAttack",
+                    "type": "Button",
+                    "id": "3ab8e79e-8323-40fc-8508-b0a7611080b3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ButtonReleaseReadyBlockAttack",
+                    "type": "Button",
+                    "id": "95117d39-d4b5-4f42-adff-2ad7b212289d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -200,6 +216,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "LightsaberOnOff",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "fe49a07d-9df0-4750-9c21-b69d3a876e57",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ButtonPressedReadyBlockAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "323f15c8-97ae-4525-9dbb-3ab2444385b8",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ButtonReleaseReadyBlockAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

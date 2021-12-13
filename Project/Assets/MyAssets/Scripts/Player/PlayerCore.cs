@@ -4,6 +4,7 @@ using Player.Controller.CollisionsManagers;
 using Player.Controller;
 using Player.EventsSystem;
 using Player.Viewer;
+using Player.Model;
 namespace Player.Core {
     [RequireComponent(typeof(Animator))]
     public class PlayerCore : MonoBehaviour
@@ -17,12 +18,14 @@ namespace Player.Core {
         private PlayerController _playerController;
         private PlayerViewer _playerViewer;
         private PlayerEventsSystem _eventsSystem;
+        private PlayerModel _playerModel;
 
         private void Awake()
         {
             _inputMaster = new InputMaster();
             _eventsSystem = new PlayerEventsSystem();
-            _playerController = new PlayerController(_inputMaster, _eventsSystem, _lightsaberController);
+            _playerModel = new PlayerModel(_eventsSystem);
+            _playerController = new PlayerController(_inputMaster, _eventsSystem, _playerModel , _lightsaberController);
             _playerViewer = new PlayerViewer(_eventsSystem, _animator, gameObject ,_cameraGameObject);
 
             _obstaclesCollisionsManager.Init(_eventsSystem);

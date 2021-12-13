@@ -18,21 +18,22 @@ namespace Lightsaber.Controller {
         }
             
 
-        public void LightsaberTurnOnOff() {
+        public bool LightsaberTurnOnOff() {
             var currentState = _model.GetCurrentState;
 
-            switch (currentState)
+            if (currentState == LightsaberStates.TurnedOn)
             {
-                case LightsaberStates.TurnedOn:
-                    TurnOff();
-                    break;
-                case LightsaberStates.TurnedOff:
-                    TurnOn();
-                    break;
+                TurnOff();
+                return false;
             }
-
-
+            else {
+                TurnOn();
+                return true;
+            } 
         }
+
+        public void LightsaberTurnOn() => TurnOn();
+        public void LightsaberTurnOff() => TurnOff();
 
         private void TurnOn() => _model.SetState(States.LightsaberStates.TurnedOn);
         private void TurnOff() => _model.SetState(States.LightsaberStates.TurnedOff);

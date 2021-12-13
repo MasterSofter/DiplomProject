@@ -8,8 +8,6 @@ namespace AISystem.EventsSystem {
         public Action<GameObject> AimEvent;
         public Action<GameObject> MoveEvent;
         public Action<GameObject> RotateEvent;
-        public Action ShootEvent;
-        public Action ReloadGunEvent;
     }
 }
 
