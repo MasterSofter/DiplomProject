@@ -3,14 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using AISystem.Controller;
 using AISystem.Actions;
+using AISystem.Model;
 
 namespace Mobs.Stormtrooper.Controller {
     public sealed class StormtrooperThink : AIThink
     {
         private float _distanceToAim = 7;
+        private AIModel _model;
 
-        public StormtrooperThink(AIAct act, GameObject gameObjectRoot) : base(act, gameObjectRoot)
+        public StormtrooperThink(AIAct act, AIModel model ,GameObject gameObjectRoot) : base(act, gameObjectRoot)
         {
+            _model = model;
+        }
+
+        public void Dispose(){
+            base.Dispose();
+            _model.Dispose();
+            _model = null;
         }
 
         public override void Do(GameObject aimGameObject) {
@@ -18,6 +27,16 @@ namespace Mobs.Stormtrooper.Controller {
 
             //если видит цель
             if (aimGameObject != null) {
+
+                if (_model.IsDead) return;
+                // если еще жив
+                if (_model.CurrentHealth == 0 && !_model.IsDead) {
+                    _model.IsDead = true;
+                    actionsList.Add(AIAction.Die);
+                    _act.Do(actionsList);
+                    return;
+                }
+
                 actionsList.Add(AIAction.Aim);       //добавляем в список задач - прицеливание
 
                 Vector3 directToAim = aimGameObject.transform.position - _gameObjectRoot.transform.position;

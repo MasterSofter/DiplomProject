@@ -3,7 +3,7 @@ using UnityEngine;
 using StormtrooperGun.EventsSystem;
 
 namespace StormtrooperGun.Viewer {
-    public class StormtrooperGunViewer
+    public class StormtrooperGunViewer : IDisposable
     {
         private StormtrooperGunEventsSystem _eventsSystem;
         private GameObject _bulletPrefub;
@@ -16,7 +16,11 @@ namespace StormtrooperGun.Viewer {
             SubscribeEvents();
         }
 
-
+        public void Dispose() {
+            _eventsSystem = null;
+            _bulletPrefub = null;
+            _prefubPointInstantiate = null;
+        }
 
         private void SubscribeEvents() {
             _eventsSystem.ViewShootEvent += OnShootEventHandler;

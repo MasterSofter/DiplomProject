@@ -6,6 +6,7 @@ namespace Player.EventsSystem {
     {
         public Action<GameObject> ObstacleDetectedEvent;
         public Action<GameObject> ObstacleMissedEvent;
+        public Action<GameObject> LaserBulletDetectedEvent;
 
         /**************************************************
          *              События для Viewer
@@ -19,6 +20,9 @@ namespace Player.EventsSystem {
         public Action ViewVaultOverObstacleEvent;
         public Action ViewStartReadyBlockAttackEvent;
         public Action ViewStopReadyBlockAttackEvent;
+        public Action ViewAttackEvent;
+        public Action ViewBlockAttackEvent;
+
     }
 }
 

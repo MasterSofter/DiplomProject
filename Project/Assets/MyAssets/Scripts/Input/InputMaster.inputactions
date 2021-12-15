@@ -84,6 +84,22 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ButtonPressedAttack",
+                    "type": "Button",
+                    "id": "c6c9bdc9-a9f8-44d1-814f-70bc18d7bfa0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "ButtonReleasedAttack",
+                    "type": "Button",
+                    "id": "d08893b0-59b3-4e23-94dd-be2b76195aa4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -238,6 +254,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "ButtonReleaseReadyBlockAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6675f3c5-466e-411c-99e4-b5d0b9f98a95",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ButtonPressedAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f440013f-ffcf-485a-809e-4beb04ed0b96",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ButtonReleasedAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -42,8 +42,8 @@ namespace AISystem.Controller {
             _height = 4.0f;
             _deltaHeight = 5;
             _scanFrequency = 10;
-            _distance = 10;
-            _angle = 65;
+            _distance = 18;
+            _angle = 120;
 
             _layers = LayerMask.GetMask("Player");
             _occlusionLayers = LayerMask.GetMask("Obstacle");

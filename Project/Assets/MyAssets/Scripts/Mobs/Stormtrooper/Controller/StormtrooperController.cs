@@ -2,32 +2,39 @@
 using UnityEngine;
 using AISystem.Controller;
 using AISystem.EventsSystem;
+using AISystem.Model;
+using UnityEngine.AI;
 
 using StormtrooperGun.Controller;
 
 namespace Mobs.Stormtrooper.Controller {
-    public sealed class StormtrooperController : AIController
+    public sealed class StormtrooperController : AIController, IDisposable
     {
         private AISensor _aiSensor;
         private AIThink _think;
         private AIAct _act;
-        private StormtrooperGunController _gunConrtoller;
         
 
-        public StormtrooperController(GameObject gameObjectRoot, AIEventsSystem eventsSystem, StormtrooperGunController gunController)
+        public StormtrooperController(GameObject gameObjectRoot, AIModel model ,AIEventsSystem eventsSystem, StormtrooperGunController gunController)
             : base(gameObjectRoot, eventsSystem)
         {
-            _gunConrtoller = gunController;
-            _act = new StormtrooperAct(eventsSystem, _gunConrtoller);
-            _think = new StormtrooperThink(_act, gameObjectRoot);
+            _act = new StormtrooperAct(eventsSystem, gunController);
+            _think = new StormtrooperThink(_act, model, gameObjectRoot);
             _aiSensor = _gameObjectRoot.AddComponent<AISensor>();
 
             InitializeControllerComponents();
         }
 
-        private void InitializeControllerComponents() {
-            _aiSensor.Init(_think, _gameObjectRoot);
-        }
+        public void Dispose() {
+            base.Dispose();
+            GameObject.Destroy(_aiSensor);
+            _aiSensor = null;
+
+            _think = null;
+            _act = null;
+    }
+
+        private void InitializeControllerComponents() => _aiSensor.Init(_think, _gameObjectRoot);
     }
 }
 

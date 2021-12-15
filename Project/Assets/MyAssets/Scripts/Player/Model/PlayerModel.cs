@@ -6,6 +6,11 @@ namespace Player.Model {
     {
         private PlayerEventsSystem _eventsSystem;
 
+        private bool _isReadyBlockAttack = false;
+
+        public bool IsReadyBlockAttack => _isReadyBlockAttack;
+        public void SetBoolReadyBlockAttack(bool value) =>
+            _isReadyBlockAttack = value;
 
         public PlayerModel(PlayerEventsSystem eventsSystem)
         {

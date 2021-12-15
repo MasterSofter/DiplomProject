@@ -11,6 +11,7 @@ namespace Player.Core {
     {
         [SerializeField] private Lightsaber.Controller.LightsaberController _lightsaberController;
         [SerializeField] private ObstaclesCollisionsManager _obstaclesCollisionsManager;
+        [SerializeField] private LaserBulletCollisionsManager _laserBulletCollisionsManager;
         [SerializeField] private GameObject _cameraGameObject;
         [SerializeField] private Animator _animator;
 
@@ -29,6 +30,7 @@ namespace Player.Core {
             _playerViewer = new PlayerViewer(_eventsSystem, _animator, gameObject ,_cameraGameObject);
 
             _obstaclesCollisionsManager.Init(_eventsSystem);
+            _laserBulletCollisionsManager.Init(_eventsSystem);
         }
 
 

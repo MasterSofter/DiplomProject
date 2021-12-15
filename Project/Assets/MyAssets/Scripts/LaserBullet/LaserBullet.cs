@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+using Mobs.Stormtrooper;
 [RequireComponent(typeof(CapsuleCollider))]
 [RequireComponent(typeof(Rigidbody))]
 public class LaserBullet : MonoBehaviour
@@ -12,6 +12,23 @@ public class LaserBullet : MonoBehaviour
         _rigitBody.velocity = 10 * gameObject.transform.forward;
 
         StartCoroutine(LifeBullet());
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Stormtrooper"))
+        {
+            Stormtrooper stormtrooper = other.gameObject.GetComponent<Stormtrooper>();
+            if (stormtrooper != null)
+            {
+                stormtrooper?.GetHeathInterface?.SetDamage(100);
+            }
+        }
+    }
+
+    public void InverseVelosity() {
+        _rigitBody.velocity = -10 * gameObject.transform.forward;
     }
 
     private IEnumerator LifeBullet() {

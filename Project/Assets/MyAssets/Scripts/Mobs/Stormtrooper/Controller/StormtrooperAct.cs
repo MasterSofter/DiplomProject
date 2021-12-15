@@ -16,6 +16,25 @@ namespace Mobs.Stormtrooper.Controller {
             _gunController = gunController;
         }
 
+        public void Dispose()
+        {
+            base.Dispose();
+            _gunController = null;
+        }
+
+        protected override void Do(AIAction _action)
+        {
+            switch (_action)
+            {
+                case AIAction.Sleep:
+                    _eventsSystem.SleepEvent?.Invoke();
+                    break;
+                case AIAction.Die:
+                    _eventsSystem.DieEvent?.Invoke();
+                    break;
+            }
+        }
+
         protected override void Do(AIAction _action, GameObject aimGameObject)
         {
 

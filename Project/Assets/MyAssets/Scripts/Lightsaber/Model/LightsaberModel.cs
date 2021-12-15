@@ -9,6 +9,9 @@ namespace Lightsaber.Model {
     {
         private LightsaberStates _currentState;
         private LightsaberViewer _viewer;
+        private float _damage = 100;
+
+        public float Damage => _damage;
 
         public LightsaberModel(LightsaberViewer viewer, LightsaberStates beinState){
             _viewer = viewer;

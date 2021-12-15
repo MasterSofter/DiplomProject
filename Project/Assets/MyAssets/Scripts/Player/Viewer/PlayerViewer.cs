@@ -15,6 +15,7 @@ namespace Player.Viewer {
         private GameObject _gameObjectRoot;
         private PlayerEventsSystem _eventsSystem;
         private Animator _animator;
+
         public PlayerViewer(PlayerEventsSystem eventsSystem, Animator animator, GameObject gameObjectRoot, GameObject cameraGameObject)
         {
             _cameraGameObject = cameraGameObject;
@@ -36,6 +37,17 @@ namespace Player.Viewer {
 
             _eventsSystem.ViewStartReadyBlockAttackEvent += OnStartReadyBlockAttackEventHandler;
             _eventsSystem.ViewStopReadyBlockAttackEvent += OnStopReadyBlockAttackEventHandler;
+
+            _eventsSystem.ViewAttackEvent += OnAttackEventHandler;
+            _eventsSystem.ViewBlockAttackEvent += OnViewBlockAttackHandler;
+        }
+
+        private void OnViewBlockAttackHandler() {
+            _animator.SetTrigger("BlockAttack");
+        }
+
+        private void OnAttackEventHandler(){
+            _animator.SetTrigger("Attack");
         }
 
         private void OnStartReadyBlockAttackEventHandler() {

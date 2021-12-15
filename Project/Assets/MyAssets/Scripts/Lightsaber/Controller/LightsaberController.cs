@@ -5,6 +5,7 @@ using UnityEngine;
 using Lightsaber.Model;
 using Lightsaber.Viewer;
 using Lightsaber.States;
+using Mobs.Stormtrooper;
 
 namespace Lightsaber.Controller {
     [RequireComponent(typeof(Animator))]
@@ -16,7 +17,17 @@ namespace Lightsaber.Controller {
         {
             _model = new LightsaberModel(new LightsaberViewer(gameObject.GetComponent<Animator>(), _lightsLaser), LightsaberStates.TurnedOff);
         }
-            
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if(other.gameObject.layer == LayerMask.NameToLayer("Stormtrooper"))
+            {
+                Stormtrooper stormtrooper = other.gameObject.GetComponent<Stormtrooper>();
+                if(stormtrooper != null) {
+                    stormtrooper?.GetHeathInterface?.SetDamage(_model.Damage);
+                }
+            }
+        }
 
         public bool LightsaberTurnOnOff() {
             var currentState = _model.GetCurrentState;

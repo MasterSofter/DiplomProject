@@ -5,7 +5,7 @@ namespace AISystem.Controller {
     /// <summary>
     /// Реализует задачу управления ИИ
     /// </summary>
-    public class AIController
+    public class AIController : IDisposable
     {
         protected GameObject _gameObjectRoot;
         protected AIEventsSystem _eventsSystem;
@@ -14,6 +14,11 @@ namespace AISystem.Controller {
         {
             _gameObjectRoot = gameObjectRoot;
             _eventsSystem = eventsSystem;
+        }
+
+        public void Dispose() {
+            _gameObjectRoot = null;
+            _eventsSystem = null;
         }
     }
 }

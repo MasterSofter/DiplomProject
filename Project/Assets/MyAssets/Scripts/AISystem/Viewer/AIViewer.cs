@@ -7,7 +7,7 @@ namespace AISystem.Viewer {
     /// <summary>
     /// Реализует задачу визуализации действий ИИ
     /// </summary>
-    public class AIViewer
+    public class AIViewer : IDisposable
     {
         protected NavMeshAgent _navMeshAgent;
         protected GameObject _gameObjectRoot;
@@ -22,13 +22,26 @@ namespace AISystem.Viewer {
             SubscribeEvents();
         }
 
+        public void Dispose() {
+           
+            _gameObjectRoot = null;
+            _eventsSystem = null;
+            _animator = null;
+
+            GameObject.Destroy(_navMeshAgent);
+            _navMeshAgent = null;
+
+        }
+
         private void SubscribeEvents() {
             _eventsSystem.SleepEvent += OnSleepEventHandler;
             _eventsSystem.MoveEvent += OnMoveEventHandler;
             _eventsSystem.RotateEvent += OnRotateEventHandler;
             _eventsSystem.AimEvent += OnAimEventHandler;
+            _eventsSystem.DieEvent += OnDieEventHandler;
         }
         protected virtual void OnAimEventHandler(GameObject aimGameObject) {}
+        protected virtual void OnDieEventHandler() {}
         protected virtual void OnSleepEventHandler() {}
         protected virtual void OnMoveEventHandler(GameObject aimGameObject) {}
         protected virtual void OnRotateEventHandler(GameObject aimGameObject) {}

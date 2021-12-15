@@ -7,7 +7,8 @@ namespace AISystem.Actions {
         Move,
         Rotate,
         Aim,
-        Shoot
+        Shoot,
+        Die
     }
 }
 

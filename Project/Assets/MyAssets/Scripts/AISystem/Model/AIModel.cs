@@ -7,21 +7,29 @@ namespace AISystem.Model {
     /// <summary>
     /// Модель данных ИИ
     /// </summary>
-    public class AIModel
+    public class AIModel : IDisposable
     {
+        protected bool _isDead;
         protected float _health;
-        protected AIEventsSystem _aiEventsSystem;
-        public AIModel(AIEventsSystem aiEventsSystem)
+
+        public bool IsDead {
+            set { _isDead = value; }
+            get { return _isDead; }
+        }
+        public float CurrentHealth => _health;
+        protected AIEventsSystem _eventSystem;
+
+        public AIModel(AIEventsSystem eventSystem)
         {
+            _isDead = false;
             _health = 100;
-            _aiEventsSystem = aiEventsSystem;
-
-            SubscribeEvents();
+            _eventSystem = eventSystem;
         }
 
-        private void SubscribeEvents() {
-
+        public void Dispose() {
+            _eventSystem = null;
         }
+
     }
 }
 

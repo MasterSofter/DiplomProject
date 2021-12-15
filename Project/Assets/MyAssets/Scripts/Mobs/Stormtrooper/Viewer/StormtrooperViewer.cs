@@ -16,6 +16,10 @@ namespace Mobs.Stormtrooper.Viewer {
         {
         }
 
+        protected override void OnDieEventHandler() {
+            _animator.SetTrigger("Die");
+        }
+
         protected override void OnSleepEventHandler(){
             _animator.SetBool("Move", false);
             _animator.SetBool("Aim", false);

@@ -20,7 +20,7 @@ namespace Player.Controller {
             _playerModel = playerModel;
             _eventsSystem = eventsSystem;
             _inputMaster = inputMaster;
-            _inputMaster.Enable();
+            
             InitializeInputMasterControlls();
             SubscribeEvents();
         }
@@ -28,11 +28,23 @@ namespace Player.Controller {
         private void SubscribeEvents() {
             _eventsSystem.ObstacleDetectedEvent += OnObstacleDetectedEventHandler;
             _eventsSystem.ObstacleMissedEvent += OnObstacleMissedEventHandler;
+            _eventsSystem.LaserBulletDetectedEvent += OnLaserBulletDetectedEventHandler;
 
+        }
+
+        private void OnLaserBulletDetectedEventHandler(GameObject gameObjectBullet) {
+            if (_playerModel.IsReadyBlockAttack)
+            {
+                LaserBullet laserBullet = gameObjectBullet.GetComponent<LaserBullet>();
+                if (laserBullet != null)
+                    laserBullet.InverseVelosity();
+                _eventsSystem.ViewBlockAttackEvent?.Invoke();
+            }
         }
 
         private void InitializeInputMasterControlls()
         {
+            _inputMaster.Enable();
             _inputMaster.Player.Move.performed += ctx => Move(ctx.ReadValue<Vector2>());
             _inputMaster.Player.StartRun.performed += ctx => StartRun();
             _inputMaster.Player.StopRun.performed += ctx => StopRun();
@@ -42,15 +54,31 @@ namespace Player.Controller {
 
             _inputMaster.Player.ButtonPressedReadyBlockAttack.performed += ctx => PressedButtonReadyBlockAttack();
             _inputMaster.Player.ButtonReleaseReadyBlockAttack.performed += ctx => ReleaseButtonReadyBlockAttack();
+
+            _inputMaster.Player.ButtonPressedAttack.performed += ctx => PressedButtonAttack();
+            _inputMaster.Player.ButtonReleasedAttack.performed += ctx => ReleaasedButtonAttack();
         }
 
+        private void ReleaasedButtonAttack()
+        {
+
+        }
+
+        private void PressedButtonAttack() {
+            _lightsaberController.LightsaberTurnOn();
+            _eventsSystem.ViewAttackEvent?.Invoke();
+        }
 
         private void PressedButtonReadyBlockAttack() {
+            _lightsaberController.LightsaberTurnOn();
             _eventsSystem.ViewStartReadyBlockAttackEvent?.Invoke();
+            _playerModel.SetBoolReadyBlockAttack(true);
+            
         }
 
         private void ReleaseButtonReadyBlockAttack() {
             _eventsSystem.ViewStopReadyBlockAttackEvent?.Invoke();
+            _playerModel.SetBoolReadyBlockAttack(false);
         }
 
         private void LightsaberOnOff() =>

@@ -97,6 +97,22 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ButtonPressedAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""c6c9bdc9-a9f8-44d1-814f-70bc18d7bfa0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ButtonReleasedAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""d08893b0-59b3-4e23-94dd-be2b76195aa4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -253,6 +269,28 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""action"": ""ButtonReleaseReadyBlockAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6675f3c5-466e-411c-99e4-b5d0b9f98a95"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ButtonPressedAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f440013f-ffcf-485a-809e-4beb04ed0b96"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ButtonReleasedAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -271,6 +309,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_LightsaberOnOff = m_Player.FindAction("LightsaberOnOff", throwIfNotFound: true);
         m_Player_ButtonPressedReadyBlockAttack = m_Player.FindAction("ButtonPressedReadyBlockAttack", throwIfNotFound: true);
         m_Player_ButtonReleaseReadyBlockAttack = m_Player.FindAction("ButtonReleaseReadyBlockAttack", throwIfNotFound: true);
+        m_Player_ButtonPressedAttack = m_Player.FindAction("ButtonPressedAttack", throwIfNotFound: true);
+        m_Player_ButtonReleasedAttack = m_Player.FindAction("ButtonReleasedAttack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -330,6 +370,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_LightsaberOnOff;
     private readonly InputAction m_Player_ButtonPressedReadyBlockAttack;
     private readonly InputAction m_Player_ButtonReleaseReadyBlockAttack;
+    private readonly InputAction m_Player_ButtonPressedAttack;
+    private readonly InputAction m_Player_ButtonReleasedAttack;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -344,6 +386,8 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @LightsaberOnOff => m_Wrapper.m_Player_LightsaberOnOff;
         public InputAction @ButtonPressedReadyBlockAttack => m_Wrapper.m_Player_ButtonPressedReadyBlockAttack;
         public InputAction @ButtonReleaseReadyBlockAttack => m_Wrapper.m_Player_ButtonReleaseReadyBlockAttack;
+        public InputAction @ButtonPressedAttack => m_Wrapper.m_Player_ButtonPressedAttack;
+        public InputAction @ButtonReleasedAttack => m_Wrapper.m_Player_ButtonReleasedAttack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -383,6 +427,12 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @ButtonReleaseReadyBlockAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnButtonReleaseReadyBlockAttack;
                 @ButtonReleaseReadyBlockAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnButtonReleaseReadyBlockAttack;
                 @ButtonReleaseReadyBlockAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnButtonReleaseReadyBlockAttack;
+                @ButtonPressedAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnButtonPressedAttack;
+                @ButtonPressedAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnButtonPressedAttack;
+                @ButtonPressedAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnButtonPressedAttack;
+                @ButtonReleasedAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnButtonReleasedAttack;
+                @ButtonReleasedAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnButtonReleasedAttack;
+                @ButtonReleasedAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnButtonReleasedAttack;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -417,6 +467,12 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @ButtonReleaseReadyBlockAttack.started += instance.OnButtonReleaseReadyBlockAttack;
                 @ButtonReleaseReadyBlockAttack.performed += instance.OnButtonReleaseReadyBlockAttack;
                 @ButtonReleaseReadyBlockAttack.canceled += instance.OnButtonReleaseReadyBlockAttack;
+                @ButtonPressedAttack.started += instance.OnButtonPressedAttack;
+                @ButtonPressedAttack.performed += instance.OnButtonPressedAttack;
+                @ButtonPressedAttack.canceled += instance.OnButtonPressedAttack;
+                @ButtonReleasedAttack.started += instance.OnButtonReleasedAttack;
+                @ButtonReleasedAttack.performed += instance.OnButtonReleasedAttack;
+                @ButtonReleasedAttack.canceled += instance.OnButtonReleasedAttack;
             }
         }
     }
@@ -433,5 +489,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnLightsaberOnOff(InputAction.CallbackContext context);
         void OnButtonPressedReadyBlockAttack(InputAction.CallbackContext context);
         void OnButtonReleaseReadyBlockAttack(InputAction.CallbackContext context);
+        void OnButtonPressedAttack(InputAction.CallbackContext context);
+        void OnButtonReleasedAttack(InputAction.CallbackContext context);
     }
 }
