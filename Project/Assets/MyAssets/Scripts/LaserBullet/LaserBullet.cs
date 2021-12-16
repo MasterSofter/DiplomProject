@@ -5,7 +5,7 @@ using Mobs.Stormtrooper;
 [RequireComponent(typeof(Rigidbody))]
 public class LaserBullet : MonoBehaviour
 {
-    private float _timeLife = 1.5f;
+    private float _timeLife = 2f;
     Rigidbody _rigitBody;
     private void Start(){
         _rigitBody = gameObject.GetComponent<Rigidbody>();
